@@ -4,6 +4,7 @@ import { useBackOnLeftArrow } from '../hooks/useBackOnLeftArrow'
 import { useGitHub } from '../hooks/useGitHub'
 import type { GithubRepo } from '../types'
 import { playMenuOpen } from '../utils/audio'
+import { useTranslation } from '../i18n/I18nProvider'
 
 interface ProjectsPageProps {
   onBack?: () => void
@@ -52,6 +53,7 @@ function formatRelative(iso: string): string {
 }
 
 function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
+  const { t } = useTranslation()
   const langColor = LANG_COLORS[repo.language ?? ''] ?? '#f0c77a'
   return (
     <a
@@ -84,12 +86,12 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
                 {repo.language}
               </span>
             )}
-            {repo.topics.slice(0, 3).map((t) => (
-              <span key={t} className="kh-hud-tag" style={{ opacity: 0.85 }}>
-                {t}
+            {repo.topics.slice(0, 3).map((topic) => (
+              <span key={topic} className="kh-hud-tag" style={{ opacity: 0.85 }}>
+                {topic}
               </span>
             ))}
-            {repo.archived && <span className="kh-hud-tag" style={{ borderColor: '#ef444488', color: '#fca5a5' }}>Archived</span>}
+            {repo.archived && <span className="kh-hud-tag" style={{ borderColor: '#ef444488', color: '#fca5a5' }}>{t.projects.archived}</span>}
           </div>
         </div>
 
@@ -99,7 +101,7 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
             <span className="kh-hud-stat">⑂ {repo.forks_count}</span>
           </div>
           <span className="kh-hud-stat opacity-80">
-            Pushed {formatRelative(repo.pushed_at)} ago
+            {t.projects.pushed(formatRelative(repo.pushed_at))}
           </span>
           {repo.homepage && (
             <a
@@ -109,7 +111,7 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
               rel="noreferrer noopener"
               className="kh-hud-tag hover:brightness-125"
             >
-              Homepage ↗
+              {t.projects.homepage}
             </a>
           )}
         </div>
@@ -119,6 +121,7 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
 }
 
 export default function ProjectsPage({ onBack }: ProjectsPageProps) {
+  const { t } = useTranslation()
   const [travelling, setTravelling] = useState(true)
   const firedRef = useRef(false)
   const { repos, loading, error, user } = useGitHub()
@@ -146,31 +149,31 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
   }, [repos])
 
   return (
-    <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-10 md:py-14">
+    <div className="kh-page gap-6 sm:gap-8">
       {onBack && (
         <button
           type="button"
           onClick={handleBack}
-          className="pointer-events-auto absolute right-6 top-10 z-30 font-khmenu text-xs uppercase tracking-[0.3em] text-primary/90 transition-opacity hover:text-primary md:right-8 md:top-14"
+          className="kh-btn-back hover:text-primary"
         >
-          ← Back to menu
+          {t.common.backToMenu}
         </button>
       )}
       <header className="relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-        <div className="relative flex flex-col items-start gap-4">
-          <div className="relative h-[200px] w-[200px] md:h-[260px] md:w-[260px] -mt-2 -ml-4 kh-travel">
+        <div className="relative flex flex-col items-start gap-4 sm:gap-5">
+          <div className="relative -mt-2 -ml-2 kh-travel" style={{ width: 'clamp(140px, 38vw, 200px)', height: 'clamp(140px, 38vw, 200px)', maxWidth: '260px', maxHeight: '260px' }}>
             <KeybladeCanvas
               className="h-full w-full"
               pose={{ travel: travelling, fov: travelling ? 52 : 40, position: travelling ? [0.6, -0.4, 4.2] : [0, 0, 5.2] }}
             />
           </div>
           <div className="flex flex-col items-start gap-2 md:-mt-8 md:pl-4 kh-fade-in">
-            <span className="font-khmenu text-[11px] uppercase tracking-[0.35em] text-primary/85">
-              {user?.public_repos ? `Public Repositories · ${user.public_repos}` : 'Loading repositories…'}
+            <span className="kh-section-heading-sm text-primary/85">
+              {user?.public_repos ? t.projects.subtitle(user.public_repos) : t.projects.loadingUser}
             </span>
-            <h1 className="kh-title text-4xl md:text-5xl">Projects</h1>
-            <p className="max-w-[56ch] text-sm text-foreground/80 md:text-[15px]">
-              Recent public projects from{' '}
+            <h1 className="kh-title text-3xl sm:text-4xl md:text-5xl">{t.projects.title}</h1>
+            <p className="max-w-[56ch] text-[13.5px] text-foreground/80 sm:text-sm md:text-[15px]">
+              {t.projects.intro}
               <a
                 className="text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary"
                 href="https://github.com/DALM1"
@@ -179,7 +182,7 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
               >
                 github.com/DALM1
               </a>
-              . Forks are hidden.
+              {t.projects.introSuffix}
             </p>
           </div>
         </div>
@@ -190,7 +193,7 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
               <img
                 src={user.avatar_url}
                 alt={`${user.login} avatar`}
-                className="h-12 w-12 rounded-full border-2"
+                className="h-10 w-10 rounded-full border-2 sm:h-12 sm:w-12"
                 style={{ borderColor: '#f0c77a', boxShadow: '0 0 14px rgba(240,199,122,0.35)' }}
               />
             )}
@@ -202,8 +205,8 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
                 <span className="max-w-[36ch] text-[13px] leading-snug text-foreground/80">{user.bio}</span>
               )}
               <div className="mt-1 flex items-center gap-3 text-[12px]">
-                <span className="kh-hud-stat">Followers {user?.followers ?? 0}</span>
-                <span className="kh-hud-stat">Following {user?.following ?? 0}</span>
+                <span className="kh-hud-stat">{t.projects.followers(user?.followers ?? 0)}</span>
+                <span className="kh-hud-stat">{t.projects.following(user?.following ?? 0)}</span>
               </div>
             </div>
           </div>
@@ -238,7 +241,7 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
             <div className="flex items-center gap-3">
               <span className="inline-block h-3 w-3 rounded-sm" style={{ background: '#f0c77a', boxShadow: '0 0 10px #f0c77a' }} />
               <span className="font-khmenu text-sm uppercase tracking-[0.28em] text-foreground/85">
-                Loading repositories from GitHub…
+                {t.projects.loading}
               </span>
             </div>
           </div>
@@ -249,7 +252,7 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
               <span className="inline-block h-3 w-3 rounded-sm" style={{ background: '#ef4444', boxShadow: '0 0 10px #ef4444' }} />
               <div>
                 <span className="block font-khmenu text-sm uppercase tracking-[0.28em] text-red-200">
-                  Could not load repositories
+                  {t.projects.error}
                 </span>
                 <span className="mt-1 block text-[13px] text-foreground/85">{error}</span>
               </div>
@@ -259,7 +262,7 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
         {!loading && !error && repos.length === 0 && (
           <div className="kh-hud-card kh-fade-in">
             <span className="font-khmenu text-sm uppercase tracking-[0.28em] text-foreground/85">
-              No public non-fork repositories yet.
+              {t.projects.empty}
             </span>
           </div>
         )}

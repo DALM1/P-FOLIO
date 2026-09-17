@@ -8,6 +8,7 @@ import ProjectsPage from './components/ProjectsPage'
 import SkillsPage from './components/SkillsPage'
 import SectionView from './components/SectionView'
 import { MENU_ITEMS, type SectionId } from './types'
+import { useTranslation } from './i18n/I18nProvider'
 
 type AppView = 'landing' | 'menu' | 'section'
 
@@ -18,6 +19,7 @@ function getSectionFromHash(): SectionId | null {
 }
 
 export default function App() {
+  const { t } = useTranslation()
   const initialHash = (() => {
     if (typeof window === 'undefined') return null
     return getSectionFromHash()
@@ -124,21 +126,21 @@ export default function App() {
 
   if (view === 'landing') {
     return (
-      <div className="relative flex min-h-full w-full items-center justify-center">
-        <div className="relative z-10 flex w-full max-w-4xl flex-col items-center gap-12 px-6 py-16 text-center md:py-24">
-          <h1 className="kh-title text-4xl md:text-6xl lg:text-7xl">
+      <div className="relative flex min-h-[100dvh] w-full items-center justify-center">
+        <div className="relative z-10 flex w-full max-w-4xl flex-col items-center gap-8 px-4 py-10 text-center sm:px-6 sm:py-16 md:py-24 md:gap-12">
+          <h1 className="kh-title kh-hero-title">
             DALM1
           </h1>
-          <p className="font-khmenu text-sm uppercase tracking-[0.35em] text-primary/90 md:text-base">
-            Kingdom Hearts Portfolio
+          <p className="font-khmenu text-[11px] uppercase tracking-[0.3em] text-primary/90 sm:text-sm sm:tracking-[0.35em] md:text-base">
+            {t.common.portfolio}
           </p>
 
-          <div className="mt-8 flex flex-col items-center gap-4">
+          <div className="mt-4 flex w-full flex-col items-center gap-3 sm:mt-8 sm:gap-4">
             <button type="button" onClick={handlePressStart} className="kh-press kh-blink">
-              Press Start
+              {t.landing.pressStart}
             </button>
-            <span className="font-khmenu text-[10px] uppercase tracking-[0.4em] text-foreground/60">
-              Click anywhere or press Enter to begin
+            <span className="max-w-[85%] font-khmenu text-[9.5px] uppercase tracking-[0.3em] text-foreground/60 sm:text-[10px] sm:tracking-[0.4em]">
+              {t.landing.beginHint}
             </span>
           </div>
         </div>
@@ -170,27 +172,31 @@ export default function App() {
   }
 
   return (
-    <div className="relative flex min-h-full w-full items-center justify-center px-6 py-10 md:py-16">
-      <div className="relative z-10 flex w-full max-w-6xl flex-col items-start gap-8 lg:flex-row lg:items-start lg:justify-between">
-        <div className="grid w-full max-w-[560px] grid-cols-1 items-start gap-x-8 gap-y-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-y-0">
-          <h1 className="kh-title col-span-1 row-span-2 text-4xl md:text-5xl lg:text-6xl md:self-start md:pt-3">
-            DALM1
-          </h1>
-          <p className="font-khmenu col-span-1 row-start-2 text-xs uppercase tracking-[0.4em] text-primary/85 md:col-start-1 md:row-start-2 md:self-end md:pb-3">
-            Connecting hearts together
-          </p>
+    <div className="relative flex min-h-[100dvh] w-full items-start justify-center px-4 py-6 sm:px-6 sm:py-10 md:py-16 lg:items-center">
+      <div className="relative z-10 flex w-full max-w-6xl flex-col items-center gap-6 lg:flex-row lg:items-start lg:justify-between lg:gap-12 sm:gap-8">
+        <div className="flex w-full max-w-[560px] flex-col items-center gap-4 lg:items-start lg:max-w-[460px] xl:max-w-[520px]">
+          <div className="flex flex-col items-center gap-2 text-center lg:items-start lg:text-left">
+            <h1 className="kh-title kh-hero-title">
+              DALM1
+            </h1>
+            <p className="font-khmenu text-[10px] uppercase tracking-[0.3em] text-primary/85 sm:text-[11px] sm:tracking-[0.36em] md:text-xs md:tracking-[0.4em]">
+              {t.common.connectingHearts}
+            </p>
+          </div>
           <KeybladeCanvas
-            className="col-span-1 row-span-2 h-[360px] w-[300px] max-w-[80vw] md:col-start-2 md:row-span-2 md:-mt-6"
+            className="h-[210px] w-[180px] max-w-[70vw] sm:h-[260px] sm:w-[220px] md:h-[320px] md:w-[260px] lg:h-[360px] lg:w-[300px] lg:max-w-none lg:-mt-2"
             speedMul={hoveredMenu ? 2.1 : 1}
           />
         </div>
 
-        <div className="w-full md:w-auto">
-          <KHMenu
-            activeId={activeSection ?? undefined}
-            onSelect={handleSelect}
-            onHover={setHoveredMenu}
-          />
+        <div className="flex w-full justify-center lg:justify-end">
+          <div className="w-full max-w-[560px] lg:w-auto">
+            <KHMenu
+              activeId={activeSection ?? undefined}
+              onSelect={handleSelect}
+              onHover={setHoveredMenu}
+            />
+          </div>
         </div>
       </div>
     </div>

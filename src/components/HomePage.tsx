@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import KeybladeHeroBackground from './KeybladeHeroBackground'
 import { playMenuBright4, unlockAudio } from '../utils/audio'
+import { useTranslation } from '../i18n/I18nProvider'
 
 interface HomePageProps {
   onBack?: () => void
@@ -9,6 +10,7 @@ interface HomePageProps {
 }
 
 export default function HomePage({ onBack, onNavigate, onStart }: HomePageProps) {
+  const { t } = useTranslation()
   void onBack
   void onNavigate
   const [entered, setEntered] = useState(false)
@@ -65,12 +67,12 @@ export default function HomePage({ onBack, onNavigate, onStart }: HomePageProps)
       </div>
 
       <div
-        className={`pointer-events-none absolute inset-0 z-10 flex items-end justify-center pb-20 transition-all duration-500 ${
+        className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-center pb-[calc(env(safe-area-inset-bottom,0)+5rem)] sm:pb-[calc(env(safe-area-inset-bottom,0)+6rem)] md:pb-[calc(env(safe-area-inset-bottom,0)+7rem)] transition-all duration-500 ${
           transitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
         }`}
       >
-        <p className="font-khmenu text-xs uppercase tracking-[0.44em] text-primary/85 md:text-sm">
-          Click anywhere · press any key
+        <p className="max-w-[92vw] px-4 text-center font-khmenu text-[10.5px] uppercase tracking-[0.34em] text-primary/85 sm:text-xs sm:tracking-[0.4em] md:text-sm">
+          {t.home.cta}
         </p>
       </div>
 

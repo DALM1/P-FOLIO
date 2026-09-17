@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DALM1 · Kingdom Hearts Portfolio</title>
+    <script>
+      (function () {
+        var base = document.createElement('base')
+        var baseHref = (function () {
+          var path = window.location.pathname
+          if (path.endsWith('/')) return path
+          var parts = path.split('/')
+          parts.pop()
+          return parts.join('/') + '/'
+        })()
+        base.href = baseHref
+        document.head.appendChild(base)
+
+        var redirect = sessionStorage.redirect
+        delete sessionStorage.redirect
+        if (redirect && redirect !== location.href) {
+          history.replaceState(null, null, redirect)
+        }
+      })()
+    </script>
+    <meta http-equiv="refresh" content="0;URL=/" />
+  </head>
+  <body>
+    <p>Redirecting…</p>
+    <script>
+      if (!location.hash) {
+        sessionStorage.redirect = location.href
+      }
+    </script>
+  </body>
+</html>

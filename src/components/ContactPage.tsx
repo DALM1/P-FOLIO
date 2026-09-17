@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import KeybladeCanvas from './KeybladeCanvas'
 import { BrandLogo, type BrandLogoId } from './BrandLogos'
 import { useBackOnLeftArrow } from '../hooks/useBackOnLeftArrow'
 import { playMenuOpen, playMenuSelect } from '../utils/audio'
+import { useTranslation } from '../i18n/I18nProvider'
 
 interface ContactPageProps {
   onBack?: () => void
@@ -10,80 +11,71 @@ interface ContactPageProps {
 
 type ContactKind = 'url' | 'mailto' | 'tel' | 'copy'
 
-interface ContactEntry {
+interface ContactEntryBase {
   id: string
-  label: string
   handle: string
   kind: ContactKind
-  actionLabel: string
   actionHref?: string
   copyValue?: string
   accent: string
   icon: BrandLogoId
 }
 
-const CONTACTS: ContactEntry[] = [
+const CONTACTS_BASE: ContactEntryBase[] = [
   {
     id: 'linkedin',
-    label: 'LinkedIn',
     handle: 'in/dimitri-almon-111d42',
     kind: 'url',
-    actionLabel: 'View profile ↗',
     actionHref: 'https://www.linkedin.com/in/dimitri-almon-111d42/',
     accent: '#0a66c2',
     icon: 'linkedin',
   },
   {
     id: 'github',
-    label: 'GitHub',
     handle: 'DALM1',
     kind: 'url',
-    actionLabel: 'View profile ↗',
     actionHref: 'https://github.com/DALM1',
     accent: '#f0c77a',
     icon: 'github',
   },
   {
     id: 'wechat',
-    label: 'WeChat',
     handle: 'DALM101',
     kind: 'copy',
-    actionLabel: 'Copy ID',
     copyValue: 'DALM101',
     accent: '#07c160',
     icon: 'wechat',
   },
   {
     id: 'whatsapp',
-    label: 'WhatsApp',
     handle: '+33 6 15 33 15 77',
     kind: 'tel',
-    actionLabel: 'Message ↗',
     actionHref: 'https://wa.me/33615331577',
     accent: '#25d366',
     icon: 'whatsapp',
   },
   {
     id: 'instagram',
-    label: 'Instagram',
     handle: '@thatsdalm',
     kind: 'url',
-    actionLabel: 'View profile ↗',
     actionHref: 'https://www.instagram.com/thatsdalm',
     accent: '#e1306c',
     icon: 'instagram',
   },
   {
     id: 'steam',
-    label: 'Steam',
     handle: 'profiles/76561199391362471',
     kind: 'url',
-    actionLabel: 'View profile ↗',
     actionHref: 'https://steamcommunity.com/profiles/76561199391362471/',
     accent: '#1b2838',
     icon: 'steam',
   },
 ]
+
+interface ContactEntry extends ContactEntryBase {
+  label: string
+  actionLabel: string
+}
 
 function IconBadge({ id, accent }: { id: BrandLogoId; accent: string }) {
   const base =
@@ -108,10 +100,32 @@ function IconBadge({ id, accent }: { id: BrandLogoId; accent: string }) {
 }
 
 export default function ContactPage({ onBack }: ContactPageProps) {
+  const { t } = useTranslation()
   const [travelling, setTravelling] = useState(true)
   const firedRef = useRef(false)
   const copyRef = useRef<Map<string, number>>(new Map())
   const [, forceRender] = useState(0)
+
+  const CONTACTS: ContactEntry[] = useMemo(() => {
+    const labelFor: Record<string, string> = {
+      linkedin: 'LinkedIn',
+      github: 'GitHub',
+      wechat: 'WeChat',
+      whatsapp: 'WhatsApp',
+      instagram: 'Instagram',
+      steam: 'Steam',
+    }
+    return CONTACTS_BASE.map((c) => {
+      let actionLabel = t.contact.viewProfile
+      if (c.kind === 'tel') actionLabel = t.contact.message
+      if (c.kind === 'copy') actionLabel = t.contact.copyId
+      return {
+        ...c,
+        label: labelFor[c.id] ?? c.id,
+        actionLabel,
+      }
+    })
+  }, [t])
 
   const handleBack = useCallback(() => {
     onBack?.()
@@ -163,20 +177,20 @@ export default function ContactPage({ onBack }: ContactPageProps) {
   )
 
   return (
-    <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-10 md:py-14">
+    <div className="kh-page gap-6 sm:gap-8">
       {onBack && (
         <button
           type="button"
           onClick={handleBack}
-          className="pointer-events-auto absolute right-6 top-10 z-30 font-khmenu text-xs uppercase tracking-[0.3em] text-primary/90 transition-opacity hover:text-primary md:right-8 md:top-14"
+          className="kh-btn-back hover:text-primary"
         >
-          ← Back to menu
+          {t.common.backToMenu}
         </button>
       )}
 
       <header className="relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-        <div className="relative flex flex-col items-start gap-4">
-          <div className="relative h-[200px] w-[200px] md:h-[260px] md:w-[260px] -mt-2 -ml-4 kh-travel">
+        <div className="relative flex flex-col items-start gap-4 sm:gap-5">
+          <div className="relative -mt-2 -ml-2 kh-travel" style={{ width: 'clamp(140px, 38vw, 200px)', height: 'clamp(140px, 38vw, 200px)', maxWidth: '260px', maxHeight: '260px' }}>
             <KeybladeCanvas
               className="h-full w-full"
               pose={{
@@ -187,12 +201,12 @@ export default function ContactPage({ onBack }: ContactPageProps) {
             />
           </div>
           <div className="flex flex-col items-start gap-2 md:-mt-8 md:pl-4 kh-fade-in">
-            <span className="font-khmenu text-[11px] uppercase tracking-[0.35em] text-primary/85">
-              {`Reach Out · ${CONTACTS.length} channels`}
+            <span className="kh-section-heading-sm text-primary/85">
+              {t.contact.subtitle(CONTACTS.length)}
             </span>
-            <h1 className="kh-title text-4xl md:text-5xl">Contact</h1>
-            <p className="max-w-[56ch] text-sm text-foreground/80 md:text-[15px]">
-              Pick a channel — cards open directly when possible. WeChat ID copies to clipboard on click.
+            <h1 className="kh-title text-3xl sm:text-4xl md:text-5xl">{t.contact.title}</h1>
+            <p className="max-w-[56ch] text-[13.5px] text-foreground/80 sm:text-sm md:text-[15px]">
+              {t.contact.intro}
             </p>
           </div>
         </div>
@@ -200,7 +214,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
         <div className="flex flex-col items-start gap-3 kh-fade-in">
           <div className="flex items-center gap-3">
             <div
-              className="flex h-12 w-12 items-center justify-center rounded-sm border-2 font-khmenu text-lg font-bold"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm border-2 font-khmenu text-base font-bold sm:h-12 sm:w-12 sm:text-lg"
               style={{
                 borderColor: '#f0c77a',
                 boxShadow: '0 0 14px rgba(240,199,122,0.4)',
@@ -210,15 +224,15 @@ export default function ContactPage({ onBack }: ContactPageProps) {
               @
             </div>
             <div className="flex flex-col items-start gap-0.5">
-              <span className="font-khmenu text-sm font-bold uppercase tracking-[0.22em] text-primary">
-                Dimitri Almon · DALM1
+              <span className="font-khmenu text-sm font-bold uppercase tracking-[0.2em] text-primary sm:tracking-[0.22em]">
+                {t.contact.userTitle}
               </span>
-              <span className="text-[13px] text-foreground/80">
-                Full Stack Engineer — Malware Analysis — AI Specialization
+              <span className="text-[12.5px] text-foreground/80 sm:text-[13px]">
+                {t.contact.userRole}
               </span>
-              <div className="mt-1 flex items-center gap-3 text-[12px]">
-                <span className="kh-hud-stat">WhatsApp · FR</span>
-                <span className="kh-hud-stat">WeChat · DALM101</span>
+              <div className="mt-1 flex flex-wrap items-center gap-2 text-[11.5px] sm:gap-3 sm:text-[12px]">
+                <span className="kh-hud-stat">{t.contact.statWhatsapp}</span>
+                <span className="kh-hud-stat">{t.contact.statWechat}</span>
               </div>
             </div>
           </div>
@@ -304,13 +318,17 @@ export default function ContactPage({ onBack }: ContactPageProps) {
                       : `0 0 8px ${c.accent}55`,
                   }}
                 >
-                  {c.kind === 'copy' ? (copied ? '✓ Copied!' : c.actionLabel) : c.actionLabel}
+                  {c.kind === 'copy' ? (copied ? t.contact.copied : c.actionLabel) : c.actionLabel}
                 </button>
                 <div
                   className="flex items-center gap-1 font-khmenu text-[10px] uppercase tracking-[0.28em] text-foreground/55"
                   aria-hidden="true"
                 >
-                  {c.kind === 'copy' ? 'Clipboard' : c.kind === 'tel' ? 'WhatsApp' : 'External'}
+                  {c.kind === 'copy'
+                    ? t.contact.kindClipboard
+                    : c.kind === 'tel'
+                    ? t.contact.kindWhatsapp
+                    : t.contact.kindExternal}
                   <span
                     className="inline-block h-1.5 w-1.5 rotate-45 border-t border-r"
                     style={{ borderColor: c.accent }}

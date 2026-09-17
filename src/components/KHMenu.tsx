@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { MENU_ITEMS, type SectionId } from '../types'
 import { playMenuSelect } from '../utils/audio'
+import { useTranslation } from '../i18n/I18nProvider'
 
 interface KHMenuProps {
   activeId?: SectionId
@@ -9,19 +10,31 @@ interface KHMenuProps {
   className?: string
 }
 
-const ITEM_HEIGHT = 76
-const ITEM_GAP = 8
-const ROW_STEP = ITEM_HEIGHT + ITEM_GAP
-
 export default function KHMenu({ activeId, onSelect, onHover, className }: KHMenuProps) {
+  const { t } = useTranslation()
   const [hoveredId, setHoveredId] = useState<SectionId>(activeId ?? MENU_ITEMS[0].id)
   const lastPlayedRef = useRef<SectionId | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const itemsRef = useRef<HTMLButtonElement[]>([])
+  const itemsRef = useRef<Array<HTMLButtonElement | null>>([])
+  const [cursorOffset, setCursorOffset] = useState(0)
 
   const cursorIndex = useMemo(() => {
     return MENU_ITEMS.findIndex((m) => m.id === hoveredId)
   }, [hoveredId])
+
+  const recomputeCursor = useMemo(() => {
+    return () => {
+      const el = itemsRef.current[cursorIndex]
+      if (!el || !containerRef.current) return
+      const containerRect = containerRef.current.getBoundingClientRect()
+      const itemRect = el.getBoundingClientRect()
+      setCursorOffset(itemRect.top - containerRect.top)
+    }
+  }, [cursorIndex])
+
+  useEffect(() => {
+    recomputeCursor()
+  }, [recomputeCursor, hoveredId])
 
   useEffect(() => {
     if (activeId) setHoveredId(activeId)
@@ -55,16 +68,35 @@ export default function KHMenu({ activeId, onSelect, onHover, className }: KHMen
     return () => window.removeEventListener('keydown', onKey)
   }, [hoveredId, onSelect])
 
+  useEffect(() => {
+    if (typeof ResizeObserver === 'undefined') return
+    const obs = new ResizeObserver(() => {
+      recomputeCursor()
+    })
+    if (containerRef.current) obs.observe(containerRef.current)
+    itemsRef.current.forEach((el) => {
+      if (el) obs.observe(el)
+    })
+    const onResize = () => recomputeCursor()
+    window.addEventListener('resize', onResize)
+    window.addEventListener('orientationchange', onResize)
+    return () => {
+      obs.disconnect()
+      window.removeEventListener('resize', onResize)
+      window.removeEventListener('orientationchange', onResize)
+    }
+  }, [recomputeCursor])
+
   return (
     <div
       ref={containerRef}
-      className={`kh-menu relative pl-12 ${className ?? ''}`}
+      className={`kh-menu relative pl-[calc(var(--kh-cursor-w)*1.15)] ${className ?? ''}`}
       role="menu"
       aria-label="Kingdom Hearts select menu"
     >
       <div
         className="kh-menu-cursor"
-        style={{ transform: `translateY(${cursorIndex * ROW_STEP}px)` }}
+        style={{ transform: `translateY(${cursorOffset}px)` }}
         aria-hidden="true"
       >
         <div className="kh-menu-cursor-inner" />
@@ -72,11 +104,12 @@ export default function KHMenu({ activeId, onSelect, onHover, className }: KHMen
 
       {MENU_ITEMS.map((item, i) => {
         const active = item.id === hoveredId
+        const label = t.menu[item.id] ?? item.label
         return (
           <button
             key={item.id}
             ref={(el) => {
-              if (el) itemsRef.current[i] = el
+              itemsRef.current[i] = el
             }}
             type="button"
             role="menuitem"
@@ -87,7 +120,7 @@ export default function KHMenu({ activeId, onSelect, onHover, className }: KHMen
             onClick={() => onSelect?.(item.id)}
           >
             <span className="justify-self-start" />
-            <span className="kh-menu-label">{item.label}</span>
+            <span className="kh-menu-label truncate pr-1">{label}</span>
           </button>
         )
       })}
