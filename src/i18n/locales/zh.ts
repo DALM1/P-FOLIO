@@ -8,7 +8,7 @@ export const zh: TranslationsShape = {
   },
   landing: {
     pressStart: '按开始',
-    beginHint: '点击任意位置或按回车进入',
+    beginHint: '按任意键进入',
   },
   menu: {
     home: '首页',
@@ -18,7 +18,7 @@ export const zh: TranslationsShape = {
     contact: '联系方式',
   },
   home: {
-    cta: '点击任意位置 · 按任意键',
+    cta: '按任意键',
   },
   projects: {
     subtitle: (n) => `公开代码仓库 · ${n}`,
@@ -33,7 +33,7 @@ export const zh: TranslationsShape = {
     empty: '暂无公开非 Fork 代码仓库。',
     pushed: (t) => `${t} 前更新`,
     archived: '已归档',
-    homepage: '项目主页 ↗',
+    homepage: '项目主页',
   },
   skills: {
     subtitle: (n) => `技能矩阵 · 共 ${n} 项技能`,
@@ -112,7 +112,7 @@ export const zh: TranslationsShape = {
       {
         year: 'Le Wagon · 巴黎',
         title: 'Web 与移动 — 软件开发项目',
-        body: '深入 Ruby on Rails、JavaScript、跨平台应用，开始转向架构方向。',
+        body: '深入 Ruby on Rails、JavaScript、跨平台应用，开始转向架构方向。获法国国家职业认证 RNCP 37625（Web 与移动方向）应用开发设计师职业头衔，对应欧洲资格框架 EQF 第 6 级（Bac+3/4 本科三/四年级），由法国技能局 France Compétences 与劳工部颁发。',
       },
       {
         year: 'EPITECH · 巴黎',
@@ -131,7 +131,7 @@ export const zh: TranslationsShape = {
       },
       {
         year: '新项目',
-        title: 'IT 服务 · 深圳 ↔ 法国 硬件进出口',
+        title: 'IT 服务 · 深圳 / 法国 硬件进出口',
         body: '第二次创业：IT 服务 + 深圳/法国硬件进出口贸易。',
       },
       {
@@ -211,10 +211,10 @@ export const zh: TranslationsShape = {
     userRole: '全栈工程师 — 恶意代码分析 — 人工智能方向',
     statWhatsapp: 'WhatsApp · 法国',
     statWechat: '微信 · DALM101',
-    viewProfile: '查看主页 ↗',
-    message: '发消息 ↗',
+    viewProfile: '查看主页',
+    message: '发消息',
     copyId: '复制 ID',
-    copied: '✓ 已复制！',
+    copied: '已复制',
     kindClipboard: '剪贴板',
     kindWhatsapp: 'WhatsApp',
     kindExternal: '外部链接',

@@ -2,13 +2,41 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0714" />
     <link rel="icon" type="image/png" href="./assets-kh/icons/Luxord.png" />
+    <link
+      rel="preload"
+      as="fetch"
+      crossorigin="anonymous"
+      href="./assets-kh/3d/Keyblade_KH_Final.obj"
+    />
+    <link rel="preload" as="image" href="./assets-kh/KH2FM%20Boxart%20Wallpaper.jpg" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="./fonts/KHMenu.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="./fonts/KHTitle.woff2" />
     <title>DALM1 (玄一Xuán Yī) ·</title>
-    <script type="module" crossorigin src="./assets/index-BCdDKbYK.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-yLF3qip-.css">
+    <script type="module" crossorigin src="./assets/index-nsaira5I.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CYbT0ddB.css">
   </head>
-  <body>
-    <div id="root"></div>
+  <body class="kh-app-masked">
+    <div
+      id="kh-initial-splash"
+      style="
+        position: fixed;
+        inset: 0;
+        z-index: 999999;
+        background-color: #000000;
+        opacity: 1;
+        transition: opacity 320ms ease-out;
+        pointer-events: none;
+      "
+    ></div>
+    <div
+      id="root"
+      style="
+        visibility: hidden;
+        opacity: 0;
+      "
+    ></div>
   </body>
 </html>

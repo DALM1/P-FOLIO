@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Dimitri ALMON (DALM1 · 玄一 Xuán Yī)",
+  "copyright": "© 2025 Dimitri ALMON — All rights reserved.",
   "homepage": ".",
   "scripts": {
     "dev": "vite",

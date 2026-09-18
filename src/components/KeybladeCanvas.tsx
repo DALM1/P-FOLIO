@@ -1,12 +1,54 @@
-import { Suspense, useMemo, useRef } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
-import { Stars } from '@react-three/drei'
+import { Sparkles, Stars } from '@react-three/drei'
 import * as THREE from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import type { Group } from 'three'
+import { getAssetUrl } from '../utils/assetUrl'
 
-const MODEL_PATH = '/assets-kh/3d/Keyblade_KH_Final.obj'
+const MODEL_PATH = getAssetUrl('/assets-kh/3d/Keyblade_KH_Final.obj')
 const ACCENT = '#f0c77a'
+const ACCENT_HOT = '#ffd98a'
+
+function useResponsiveStars() {
+  const compute = () => {
+    if (typeof window === 'undefined') return { starsR: 85, spark: 9 }
+    const w = window.innerWidth
+    if (w < 430) return { starsR: 195, spark: 20 }
+    if (w < 640) return { starsR: 170, spark: 15 }
+    if (w < 1024) return { starsR: 120, spark: 11 }
+    return { starsR: 85, spark: 9 }
+  }
+  const fallback = { starsR: 85, spark: 9 }
+  const [v, setV] = useState(() =>
+    typeof window !== 'undefined' ? compute() : fallback,
+  )
+  const prevRef = useRef<Record<string, number> | null>(null)
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    let raf = 0
+    const same = (a: Record<string, number>, b: Record<string, number>) =>
+      Object.keys(a).every((k) => Math.abs((a as any)[k] - (b as any)[k]) < 1e-9)
+    const onEvt = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        const next = compute() as any
+        const cur = (prevRef.current ?? v) as any
+        if (prevRef.current && same(cur, next)) return
+        prevRef.current = next
+        setV(next)
+      })
+    }
+    window.addEventListener('resize', onEvt, { passive: true })
+    window.addEventListener('orientationchange', onEvt)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', onEvt)
+      window.removeEventListener('orientationchange', onEvt)
+    }
+  }, [v])
+  return v
+}
 
 export interface KeybladeCameraPose {
   position?: [number, number, number]
@@ -25,6 +67,7 @@ function KeybladeModel({ modelPath, accent, travel = false, speedMul = 1 }: Keyb
   const groupRef = useRef<Group>(null)
   const raw = useLoader(OBJLoader, modelPath)
   const spinRef = useRef(1)
+  const tRef = useRef(0)
 
   const normalized = useMemo(() => {
     const clone = raw.clone()
@@ -56,9 +99,10 @@ function KeybladeModel({ modelPath, accent, travel = false, speedMul = 1 }: Keyb
     return clone
   }, [raw, accent])
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (!groupRef.current) return
-    const t = state.clock.elapsedTime
+    tRef.current += delta
+    const t = tRef.current
     spinRef.current += (speedMul - spinRef.current) * Math.min(1, delta * 10)
     const s = spinRef.current
     if (travel) {
@@ -76,7 +120,7 @@ function KeybladeModel({ modelPath, accent, travel = false, speedMul = 1 }: Keyb
   })
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} position={[0, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
       <primitive object={normalized} />
     </group>
   )
@@ -89,19 +133,25 @@ interface KeybladeCanvasProps {
 }
 
 export default function KeybladeCanvas({ className, pose, speedMul }: KeybladeCanvasProps) {
-  const camera: { position: [number, number, number]; fov: number } = {
+  const cam: { position: [number, number, number]; fov: number } = {
     position: pose?.position ?? [0, 0, 5.5],
     fov: pose?.fov ?? 40,
   }
   const travel = Boolean(pose?.travel)
+  const { starsR, spark } = useResponsiveStars()
 
   return (
     <div className={className}>
       <Canvas
-        camera={{ position: camera.position, fov: camera.fov }}
+        camera={{ position: cam.position, fov: cam.fov, near: 0.1, far: 1200 }}
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 2]}
         shadows
+        onCreated={({ gl, scene, camera }) => {
+          scene.updateMatrixWorld(true)
+          camera.updateProjectionMatrix()
+          gl.info.reset()
+        }}
       >
         <ambientLight intensity={0.45} />
         <directionalLight
@@ -111,11 +161,34 @@ export default function KeybladeCanvas({ className, pose, speedMul }: KeybladeCa
           castShadow
         />
         <pointLight position={[-4, -3, 4]} intensity={0.7} color="#ffffff" />
-        <Stars radius={50} depth={20} count={1200} factor={2.5} fade speed={0.2} />
-        <Suspense fallback={null}>
+        <Stars radius={starsR} depth={20} count={1200} factor={2.5} fade speed={0.2} />
+        <Sparkles
+          count={60}
+          scale={spark}
+          size={2.2}
+          speed={0.3}
+          color={ACCENT_HOT}
+          opacity={0.7}
+        />
+        <Suspense fallback={<FallbackCube />}>
           <KeybladeModel modelPath={MODEL_PATH} accent={ACCENT} travel={travel} speedMul={speedMul} />
         </Suspense>
       </Canvas>
     </div>
+  )
+}
+
+function FallbackCube() {
+  return (
+    <mesh position={[0, 0, 0]} rotation={[0, 0, -Math.PI / 2]} scale={[0.9, 0.9, 0.9]}>
+      <boxGeometry args={[1.9, 0.24, 0.3]} />
+      <meshStandardMaterial
+        color={ACCENT}
+        emissive={ACCENT}
+        emissiveIntensity={0.18}
+        metalness={0.88}
+        roughness={0.25}
+      />
+    </mesh>
   )
 }

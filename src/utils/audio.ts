@@ -1,11 +1,14 @@
-type SoundId = 'select' | 'open' | 'move' | 'previous' | 'bright4'
+import { getAssetUrl } from './assetUrl'
+
+export type SoundId = 'select' | 'open' | 'move' | 'previous' | 'bright4' | 'computerOff'
 
 const PATHS: Record<SoundId, string> = {
-  select: '/sound-ui/Menu Select.wav',
-  open: '/sound-ui/Menu Open.wav',
-  move: '/sound-ui/Menu Move.wav',
-  previous: '/sound-ui/Menu Previous.wav',
-  bright4: '/audio/Menu-bright-4.mp3',
+  select: getAssetUrl('/sound-ui/Menu Select.wav'),
+  open: getAssetUrl('/sound-ui/Menu Open.wav'),
+  move: getAssetUrl('/sound-ui/Menu Move.wav'),
+  previous: getAssetUrl('/sound-ui/Menu Previous.wav'),
+  bright4: getAssetUrl('/audio/Menu-bright-4.mp3'),
+  computerOff: getAssetUrl('/sound-ui/Computer Off.wav'),
 }
 
 const DEFAULTS: Record<SoundId, { volume: number; lockMs: number }> = {
@@ -14,6 +17,7 @@ const DEFAULTS: Record<SoundId, { volume: number; lockMs: number }> = {
   move: { volume: 0.5, lockMs: 40 },
   previous: { volume: 0.75, lockMs: 140 },
   bright4: { volume: 0.82, lockMs: 180 },
+  computerOff: { volume: 0.7, lockMs: 200 },
 }
 
 const cache: Partial<Record<SoundId, HTMLAudioElement>> = {}
@@ -61,6 +65,7 @@ export const playMenuOpen = () => playSound('open')
 export const playMenuMove = () => playSound('move')
 export const playMenuPrevious = () => playSound('previous')
 export const playMenuBright4 = () => playSound('bright4')
+export const playComputerOff = () => playSound('computerOff')
 
 if (typeof window !== 'undefined') {
   const tryUnlock = () => {

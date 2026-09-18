@@ -1,0 +1,43 @@
+DALM1 Portfolio — Kingdom Hearts Edition
+Copyright (c) 2025 Dimitri ALMON — DALM1 (玄一 Xuán Yī)
+All rights reserved.
+
+Tous droits réservés / 版权所有 / Все права защищены.
+
+Aucune partie de ce projet (code source, styles, composants React, scènes
+React Three Fiber / Three.js, traductions FR/EN/ZH/RU, design d'interface,
+squelette KH-HUD, configuration audio, intégration portfolio GitHub, assets
+personnels pdp-portfolio et icons dérivées custom, workflow navigation
+menu/routes, boot splash, système de sons, responsive breakpoints,
+spécifications i18n typées, hooks, helpers utilitaires et configuration
+globale d'application) ne peut être reproduite, copiée, modifiée, adaptée,
+sous-licenciée, publiée, diffusée, distribuée, utilisée pour créer une œuvre
+dérivée ou exploitée à des fins commerciales ou non commerciales, sous quelque
+forme ou par quelque moyen que ce soit (y compris, sans limitation, électronique,
+mécanique, photocopie, enregistrement ou autre), sans l'autorisation écrite
+préalable et expresse de Dimitri ALMON — DALM1.
+
+THE SOFTWARE, SOURCE CODE AND ASSETS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO
+EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+—
+Avis tiers (dépendances Open Source utilisées dans le build, non incluses dans
+les droits réservés ci-dessus, soumises à leurs propres licences MIT / BSD /
+Apache-2.0 / MPL 2.0 / ISC / Three.js MIT / drei MIT / R3F MIT / Tailwind MIT /
+Vite MIT / React MIT / TypeScript Apache-2.0) :
+  react, react-dom (MIT), three (MIT), @react-three/fiber (MIT),
+  @react-three/drei (MIT), vite (MIT), tailwindcss (MIT), typescript (Apache-2.0),
+  autoprefixer (MIT), postcss (MIT), gh-pages (BSD), @types/* (MIT).
+
+Thème Kingdom Hearts — hommage non officiel, non affilié, non sponsorisé par
+SQUARE ENIX HOLDINGS CO., LTD. / The Walt Disney Company. Les marques Kingdom
+Hearts, les personnages, logos, design de menus et l'univers visuel Kingdom
+Hearts sont des marques déposées ou des droits d'auteur de SQUARE ENIX et
+Disney. Ce projet est un portfolio personnel de présentation ; toute référence
+à l'univers Kingdom Hearts est une œuvre de fan, utilisée à titre indicatif
+uniquement et sans but commercial.

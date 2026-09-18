@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import KeybladeCanvas from './KeybladeCanvas'
 import { useBackOnLeftArrow } from '../hooks/useBackOnLeftArrow'
 import { useGitHub } from '../hooks/useGitHub'
@@ -122,7 +122,6 @@ function RepoCard({ repo, index }: { repo: GithubRepo; index: number }) {
 
 export default function ProjectsPage({ onBack }: ProjectsPageProps) {
   const { t } = useTranslation()
-  const [travelling, setTravelling] = useState(true)
   const firedRef = useRef(false)
   const { repos, loading, error, user } = useGitHub()
 
@@ -136,8 +135,6 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
     if (firedRef.current) return
     firedRef.current = true
     playMenuOpen()
-    const t = window.setTimeout(() => setTravelling(false), 520)
-    return () => window.clearTimeout(t)
   }, [])
 
   const topLanguages = useMemo(() => {
@@ -149,7 +146,7 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
   }, [repos])
 
   return (
-    <div className="kh-page gap-6 sm:gap-8">
+    <div className="kh-page gap-6 sm:gap-8 relative">
       {onBack && (
         <button
           type="button"
@@ -164,7 +161,7 @@ export default function ProjectsPage({ onBack }: ProjectsPageProps) {
           <div className="relative -mt-2 -ml-2 kh-travel" style={{ width: 'clamp(140px, 38vw, 200px)', height: 'clamp(140px, 38vw, 200px)', maxWidth: '260px', maxHeight: '260px' }}>
             <KeybladeCanvas
               className="h-full w-full"
-              pose={{ travel: travelling, fov: travelling ? 52 : 40, position: travelling ? [0.6, -0.4, 4.2] : [0, 0, 5.2] }}
+              pose={{ travel: false, fov: 40, position: [0, 0, 5.2] }}
             />
           </div>
           <div className="flex flex-col items-start gap-2 md:-mt-8 md:pl-4 kh-fade-in">

@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: 'KHTitle';
-  src: url('/fonts/KHTitle.woff2') format('woff2');
+  src: url('../fonts/KHTitle.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -12,7 +12,7 @@
 
 @font-face {
   font-family: 'KHMenu';
-  src: url('/fonts/KHMenu.woff2') format('woff2');
+  src: url('../fonts/KHMenu.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -20,7 +20,7 @@
 
 @font-face {
   font-family: 'KHMenuBold';
-  src: url('/fonts/KHMenuBold.woff2') format('woff2');
+  src: url('../fonts/KHMenuBold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -28,7 +28,7 @@
 
 @font-face {
   font-family: 'KHData';
-  src: url('/fonts/KHData.woff2') format('woff2');
+  src: url('../fonts/KHData.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -108,7 +108,7 @@
   body {
     color: #f8f3e6;
     background: #05060a;
-    background-image: url('/assets-kh/KH2FM%20Boxart%20Wallpaper.jpg');
+    background-image: url('../assets-kh/KH2FM%20Boxart%20Wallpaper.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -119,6 +119,11 @@
     padding-left: env(safe-area-inset-left, 0);
     padding-right: env(safe-area-inset-right, 0);
     min-height: 100dvh;
+  }
+
+  body.kh-app-masked {
+    background-image: none !important;
+    background-color: #000000 !important;
   }
 
   @media (pointer: coarse) {

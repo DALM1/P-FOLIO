@@ -8,7 +8,7 @@ export const en: TranslationsShape = {
   },
   landing: {
     pressStart: 'Press Start',
-    beginHint: 'Click anywhere or press Enter to begin',
+    beginHint: 'Press any key to begin',
   },
   menu: {
     home: 'Home',
@@ -18,7 +18,7 @@ export const en: TranslationsShape = {
     contact: 'Contact',
   },
   home: {
-    cta: 'Click anywhere · press any key',
+    cta: 'Press any key',
   },
   projects: {
     subtitle: (n) => `Public Repositories · ${n}`,
@@ -33,7 +33,7 @@ export const en: TranslationsShape = {
     empty: 'No public non-fork repositories yet.',
     pushed: (t) => `Pushed ${t} ago`,
     archived: 'Archived',
-    homepage: 'Homepage ↗',
+    homepage: 'Homepage',
   },
   skills: {
     subtitle: (n) => `Skill Matrix · ${n} skills`,
@@ -112,7 +112,7 @@ export const en: TranslationsShape = {
       {
         year: 'Le Wagon · Paris',
         title: 'Web & Mobile — Software projects',
-        body: 'Deep-dive into Ruby on Rails, JavaScript, cross-platform apps. Moved toward architecture concerns.',
+        body: 'Deep-dive into Ruby on Rails, JavaScript, cross-platform apps. Moved toward architecture concerns. Professional title “Conceptrice·teur Développeur·se d’Applications” — RNCP 37625 (Web & Mobile). Level 6 EQF (Bachelor+3/4), certified by France Compétences / French Ministry of Labour.',
       },
       {
         year: 'EPITECH · Paris',
@@ -131,7 +131,7 @@ export const en: TranslationsShape = {
       },
       {
         year: 'New Venture',
-        title: 'IT services · Hardware import-export Shenzhen ↔ FR',
+        title: 'IT services · Hardware import-export Shenzhen / FR',
         body: 'Second entrepreneurial project : IT services + hardware import-export Shenzhen / France.',
       },
       {
@@ -213,10 +213,10 @@ export const en: TranslationsShape = {
     userRole: 'Full Stack Engineer — Malware Analysis — AI Specialization',
     statWhatsapp: 'WhatsApp · FR',
     statWechat: 'WeChat · DALM101',
-    viewProfile: 'View profile ↗',
-    message: 'Message ↗',
+    viewProfile: 'View profile',
+    message: 'Message',
     copyId: 'Copy ID',
-    copied: '✓ Copied!',
+    copied: 'Copied',
     kindClipboard: 'Clipboard',
     kindWhatsapp: 'WhatsApp',
     kindExternal: 'External',

@@ -4,15 +4,11 @@ import { playMenuBright4, unlockAudio } from '../utils/audio'
 import { useTranslation } from '../i18n/I18nProvider'
 
 interface HomePageProps {
-  onBack?: () => void
-  onNavigate?: (section: 'projects' | 'skills' | 'about' | 'contact') => void
   onStart?: () => void
 }
 
-export default function HomePage({ onBack, onNavigate, onStart }: HomePageProps) {
+export default function HomePage({ onStart }: HomePageProps) {
   const { t } = useTranslation()
-  void onBack
-  void onNavigate
   const [entered, setEntered] = useState(false)
   const [transitioning, setTransitioning] = useState(false)
   const firedRef = useRef(false)

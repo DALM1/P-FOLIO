@@ -2,8 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import KeybladeCanvas from './KeybladeCanvas'
 import { BrandLogo, type BrandLogoId } from './BrandLogos'
 import { useBackOnLeftArrow } from '../hooks/useBackOnLeftArrow'
-import { playMenuOpen, playMenuSelect } from '../utils/audio'
+import { playComputerOff, playMenuOpen, playMenuSelect } from '../utils/audio'
 import { useTranslation } from '../i18n/I18nProvider'
+import { getAssetUrl } from '../utils/assetUrl'
 
 interface ContactPageProps {
   onBack?: () => void
@@ -101,7 +102,6 @@ function IconBadge({ id, accent }: { id: BrandLogoId; accent: string }) {
 
 export default function ContactPage({ onBack }: ContactPageProps) {
   const { t } = useTranslation()
-  const [travelling, setTravelling] = useState(true)
   const firedRef = useRef(false)
   const copyRef = useRef<Map<string, number>>(new Map())
   const [, forceRender] = useState(0)
@@ -137,8 +137,6 @@ export default function ContactPage({ onBack }: ContactPageProps) {
     if (firedRef.current) return
     firedRef.current = true
     playMenuOpen()
-    const t = window.setTimeout(() => setTravelling(false), 520)
-    return () => window.clearTimeout(t)
   }, [])
 
   const flashCopied = useCallback((id: string) => {
@@ -176,8 +174,16 @@ export default function ContactPage({ onBack }: ContactPageProps) {
     [flashCopied],
   )
 
+  const onExternalLinkClick = useCallback(
+    (entry: ContactEntry) => {
+      if (entry.kind === 'copy') return
+      playComputerOff()
+    },
+    [],
+  )
+
   return (
-    <div className="kh-page gap-6 sm:gap-8">
+    <div className="kh-page gap-6 sm:gap-8 relative">
       {onBack && (
         <button
           type="button"
@@ -193,11 +199,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
           <div className="relative -mt-2 -ml-2 kh-travel" style={{ width: 'clamp(140px, 38vw, 200px)', height: 'clamp(140px, 38vw, 200px)', maxWidth: '260px', maxHeight: '260px' }}>
             <KeybladeCanvas
               className="h-full w-full"
-              pose={{
-                travel: travelling,
-                fov: travelling ? 52 : 40,
-                position: travelling ? [0.6, -0.4, 4.2] : [0, 0, 5.2],
-              }}
+              pose={{ travel: false, fov: 40, position: [0, 0, 5.2] }}
             />
           </div>
           <div className="flex flex-col items-start gap-2 md:-mt-8 md:pl-4 kh-fade-in">
@@ -214,14 +216,19 @@ export default function ContactPage({ onBack }: ContactPageProps) {
         <div className="flex flex-col items-start gap-3 kh-fade-in">
           <div className="flex items-center gap-3">
             <div
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm border-2 font-khmenu text-base font-bold sm:h-12 sm:w-12 sm:text-lg"
+              className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-sm border-2 font-khmenu text-base font-bold sm:h-12 sm:w-12 sm:text-lg"
               style={{
                 borderColor: '#f0c77a',
                 boxShadow: '0 0 14px rgba(240,199,122,0.4)',
                 color: '#fbe4a9',
               }}
             >
-              @
+              <img
+                src={getAssetUrl('/assets-kh/pdp-portfolio.jpeg')}
+                alt=""
+                className="h-full w-full object-cover"
+                draggable={false}
+              />
             </div>
             <div className="flex flex-col items-start gap-0.5">
               <span className="font-khmenu text-sm font-bold uppercase tracking-[0.2em] text-primary sm:tracking-[0.22em]">
@@ -275,6 +282,7 @@ export default function ContactPage({ onBack }: ContactPageProps) {
               className="kh-hud-card kh-fade-in block group"
               style={{ animationDelay: `${i * 45}ms` }}
               onMouseEnter={() => playMenuSelect()}
+              onClick={() => onExternalLinkClick(c)}
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex min-w-0 items-start gap-4">

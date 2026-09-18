@@ -6,7 +6,7 @@ export const fr = {
   },
   landing: {
     pressStart: 'Press Start',
-    beginHint: 'Cliquez partout ou appuyez sur Entrée pour commencer',
+    beginHint: 'Appuyez sur une touche pour commencer',
   },
   menu: {
     home: 'Accueil',
@@ -16,7 +16,7 @@ export const fr = {
     contact: 'Contact',
   },
   home: {
-    cta: 'Cliquez partout · appuyez sur une touche',
+    cta: 'Appuyez sur une touche',
   },
   projects: {
     subtitle: (n: number) => `Dépôts publics · ${n}`,
@@ -32,13 +32,13 @@ export const fr = {
     empty: "Aucun dépôt public (hors forks) pour l'instant.",
     pushed: (t: string) => `Poussé il y a ${t}`,
     archived: 'Archivé',
-    homepage: 'Page d’accueil ↗',
+    homepage: 'Page d’accueil',
   },
   skills: {
     subtitle: (n: number) => `Matrice de compétences · ${n} compétences`,
     title: 'Compétences',
     intro:
-      'Matrice de compétences par paliers — classé S (Maîtrise) → C (Connaissances). La distribution des langages provient des dépôts GitHub publics.',
+      'Matrice de compétences par paliers — classée S (Maîtrise) → C (Connaissances). La distribution des langages provient des dépôts GitHub publics.',
     tierLegend: {
       SMaster: 'Maîtrise / Expert',
       SDesc: 'Production-ready sur plusieurs projets.',
@@ -113,7 +113,7 @@ export const fr = {
       {
         year: 'Le Wagon · Paris',
         title: 'Web & Mobile — Projets logiciels',
-        body: 'Approfondissement Ruby on Rails, JavaScript, apps cross-platform. Basculer vers des problématiques d’architecture.',
+        body: 'Approfondissement Ruby on Rails, JavaScript, apps cross-platform. Basculer vers des problématiques d’architecture. Titre professionnel Concepteur·rice développeur·se d’applications — RNCP 37625 (Web & Mobile). Niveau 6 CEC (Bac+3/4), certificateur France Compétences / Ministère du Travail.',
       },
       {
         year: 'EPITECH · Paris',
@@ -132,7 +132,7 @@ export const fr = {
       },
       {
         year: 'New Venture',
-        title: 'Services IT · Import-export hardware Shenzhen ↔ FR',
+        title: 'Services IT · Import-export hardware Shenzhen / FR',
         body: 'Second projet entrepreneurial : services informatiques + import-export matériel hardware Shenzhen / France.',
       },
       {
@@ -158,11 +158,11 @@ export const fr = {
     bioParagraphs: [
       {
         content:
-          'J’ai d’abord étudié au Saint Martin-Saint Denis Val de Loire International School, dans un environnement international. J’ai ensuite suivi une formation militaire au sein de l’Armée de Terre française, en tant que soldat d’infanterie de marine, avant de réorienter mon parcours vers l’informatique.',
+          'J’ai d’abord étudié à Saint Martin-Saint Denis Val de Loire International School, dans un environnement international. J’ai ensuite suivi une formation militaire au sein de l’Armée de Terre française, en tant que soldat d’infanterie de marine, avant de réorienter mon parcours vers l’informatique.',
       },
       {
         content:
-          'Ma reconversion dans la tech a commencé avec une formation en développement web à La Passerelle, suivie de Le Réacteur et du CS50 de Harvard, afin de consolider mes fondamentaux en informatique et en programmation.',
+          'Ma reconversion dans la tech a commencé avec une formation en développement web à La Passerelle Paris, suivie de Le Réacteur et du CS50 de Harvard, afin de consolider mes fondamentaux en informatique et en programmation.',
       },
       {
         content:
@@ -170,7 +170,7 @@ export const fr = {
       },
       {
         content:
-          'J’ai poursuivi cette évolution avec un MSc Architecte des Systèmes d’Information à EPITECH Paris, avec une spécialisation en intelligence artificielle, systèmes distribués et architectures de données. J’y travaille notamment sur l’adaptation et le fine-tuning de LLM en Python, ainsi que sur la conception de systèmes complexes.',
+          'J’ai poursuivi cette évolution avec un Master of Science Architecte des Systèmes d’Information à EPITECH Paris, avec une spécialisation en intelligence artificielle, systèmes distribués et architectures de données. Je travaille notamment sur l’adaptation et le fine-tuning de LLM en Python, ainsi que sur la conception de systèmes complexes.',
       },
     ],
     engEntrepreneurship: [
@@ -222,10 +222,10 @@ export const fr = {
     userRole: 'Full Stack Engineer — Malware Analysis — AI Specialization',
     statWhatsapp: 'WhatsApp · FR',
     statWechat: 'WeChat · DALM101',
-    viewProfile: 'Voir le profil ↗',
-    message: 'Message ↗',
+    viewProfile: 'Voir le profil',
+    message: 'Message',
     copyId: 'Copier l’ID',
-    copied: '✓ Copié !',
+    copied: 'Copié',
     kindClipboard: 'Presse-papiers',
     kindWhatsapp: 'WhatsApp',
     kindExternal: 'Externe',

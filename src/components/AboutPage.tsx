@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import KeybladeCanvas from './KeybladeCanvas'
 import { useBackOnLeftArrow } from '../hooks/useBackOnLeftArrow'
 import { useGitHub } from '../hooks/useGitHub'
 import { playMenuOpen } from '../utils/audio'
 import { useTranslation } from '../i18n/I18nProvider'
+import { getAssetUrl } from '../utils/assetUrl'
 
 interface AboutPageProps {
   onBack?: () => void
@@ -26,7 +27,6 @@ const TIMELINE_ACCENTS: Record<number, string> = {
 
 export default function AboutPage({ onBack }: AboutPageProps) {
   const { t } = useTranslation()
-  const [travelling, setTravelling] = useState(true)
   const firedRef = useRef(false)
   const { user } = useGitHub()
 
@@ -49,12 +49,10 @@ export default function AboutPage({ onBack }: AboutPageProps) {
     if (firedRef.current) return
     firedRef.current = true
     playMenuOpen()
-    const tm = window.setTimeout(() => setTravelling(false), 520)
-    return () => window.clearTimeout(tm)
   }, [])
 
   return (
-    <div className="kh-page gap-6 sm:gap-8">
+    <div className="kh-page gap-6 sm:gap-8 relative">
       {onBack && (
         <button
           type="button"
@@ -79,7 +77,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
             }}
           >
             <img
-              src="/assets-kh/pdp-portfolio.jpeg"
+              src={getAssetUrl('/assets-kh/pdp-portfolio.jpeg')}
               alt="Dimitri Almon portrait"
               className="h-full w-full object-cover"
               loading="eager"
@@ -98,11 +96,7 @@ export default function AboutPage({ onBack }: AboutPageProps) {
           <div className="relative shrink-0 kh-travel" style={{ width: 'clamp(112px, 28vw, 144px)', height: 'clamp(112px, 28vw, 144px)', maxWidth: 'clamp(112px, 28vw, 180px)', maxHeight: 'clamp(112px, 28vw, 180px)' }}>
             <KeybladeCanvas
               className="h-full w-full"
-              pose={{
-                travel: travelling,
-                fov: travelling ? 52 : 40,
-                position: travelling ? [0.6, -0.4, 4.2] : [0, 0, 5.2],
-              }}
+              pose={{ travel: false, fov: 40, position: [0, 0, 5.2] }}
             />
           </div>
         </div>

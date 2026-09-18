@@ -8,7 +8,7 @@ export const ru: TranslationsShape = {
   },
   landing: {
     pressStart: 'Нажмите Старт',
-    beginHint: 'Нажмите в любом месте или Enter для продолжения',
+    beginHint: 'Нажмите любую клавишу для продолжения',
   },
   menu: {
     home: 'Главная',
@@ -18,7 +18,7 @@ export const ru: TranslationsShape = {
     contact: 'Контакты',
   },
   home: {
-    cta: 'Нажмите в любом месте · нажмите любую клавишу',
+    cta: 'Нажмите любую клавишу',
   },
   projects: {
     subtitle: (n) => `Публичные репозитории · ${n}`,
@@ -33,7 +33,7 @@ export const ru: TranslationsShape = {
     empty: 'Публичных не-форк репозиториев пока нет.',
     pushed: (t) => `Обновлено ${t} назад`,
     archived: 'Архив',
-    homepage: 'Домашняя страница ↗',
+    homepage: 'Домашняя страница',
   },
   skills: {
     subtitle: (n) => `Матрица навыков · ${n} навыков`,
@@ -112,7 +112,7 @@ export const ru: TranslationsShape = {
       {
         year: 'Le Wagon · Париж',
         title: 'Web и Mobile — Программные проекты',
-        body: 'Глубокое погружение в Ruby on Rails, JavaScript, кроссплатформенные приложения. Переход к архитектуре.',
+        body: 'Глубокое погружение в Ruby on Rails, JavaScript, кроссплатформенные приложения. Переход к архитектуре. Профессиональный титул «Концептуалист-разработчик приложений» — RNCP 37625 (Web & Mobile). Уровень 6 EQF (Бакалавриат +3/4), сертификат France Compétences / Министерство труда Франции.',
       },
       {
         year: 'EPITECH · Париж',
@@ -131,7 +131,7 @@ export const ru: TranslationsShape = {
       },
       {
         year: 'Новый проект',
-        title: 'IT-услуги · Импорт-экспорт оборудования Шэньчжэнь ↔ ФР',
+        title: 'IT-услуги · Импорт-экспорт оборудования Шэньчжэнь / ФР',
         body: 'Второй предпринимательский проект : IT-услуги + импорт-экспорт оборудования Шэньчжэнь / Франция.',
       },
       {
@@ -213,10 +213,10 @@ export const ru: TranslationsShape = {
     userRole: 'Full Stack Engineer — Malware Analysis — AI Specialization',
     statWhatsapp: 'WhatsApp · Франция',
     statWechat: 'WeChat · DALM101',
-    viewProfile: 'Открыть профиль ↗',
-    message: 'Написать ↗',
+    viewProfile: 'Открыть профиль',
+    message: 'Написать',
     copyId: 'Скопировать ID',
-    copied: '✓ Скопировано!',
+    copied: 'Скопировано',
     kindClipboard: 'Буфер обмена',
     kindWhatsapp: 'WhatsApp',
     kindExternal: 'Внешняя ссылка',
